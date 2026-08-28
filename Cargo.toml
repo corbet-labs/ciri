@@ -7,11 +7,11 @@ members = [
 
 [workspace.package]
 version = "26.4.0"
-description = "A scrollable-tiling Wayland compositor"
+description = "A close-to-upstream Niri fork with Ciri runtime identity and software EGL support"
 authors = ["Ivan Molodetskikh <yalterz@gmail.com>"]
 license = "GPL-3.0-or-later"
 edition = "2021"
-repository = "https://github.com/niri-wm/niri"
+repository = "https://github.com/corbet-labs/ciri"
 rust-version = "1.87"
 
 [workspace.dependencies]
@@ -38,7 +38,8 @@ rev = "4cf0b62028039661477d482ec4758b687d8f4392"
 # path = "../smithay/smithay-drm-extras"
 
 [package]
-name = "niri"
+name = "ciri"
+autobins = false
 version.workspace = true
 description.workspace = true
 authors.workspace = true
@@ -49,6 +50,17 @@ rust-version.workspace = true
 
 readme = "README.md"
 keywords = ["wayland", "compositor", "tiling", "smithay", "wm"]
+
+[lib]
+# Keep the internal library name aligned with upstream. Renaming implementation
+# crates would create a large permanent rebase delta without changing Ciri's
+# public runtime interface.
+name = "niri"
+path = "src/lib.rs"
+
+[[bin]]
+name = "ciri"
+path = "src/main.rs"
 
 [dependencies]
 accesskit = { version = "0.24", optional = true }
@@ -165,12 +177,12 @@ similar.opt-level = 3
 [package.metadata.generate-rpm]
 version = "26.04"
 assets = [
-    { source = "target/release/niri", dest = "/usr/bin/", mode = "755" },
-    { source = "resources/niri-session", dest = "/usr/bin/", mode = "755" },
-    { source = "resources/niri.desktop", dest = "/usr/share/wayland-sessions/", mode = "644" },
-    { source = "resources/niri-portals.conf", dest = "/usr/share/xdg-desktop-portal/", mode = "644" },
-    { source = "resources/niri.service", dest = "/usr/lib/systemd/user/", mode = "644" },
-    { source = "resources/niri-shutdown.target", dest = "/usr/lib/systemd/user/", mode = "644" },
+    { source = "target/release/ciri", dest = "/usr/bin/", mode = "755" },
+    { source = "resources/ciri-session", dest = "/usr/bin/", mode = "755" },
+    { source = "resources/ciri.desktop", dest = "/usr/share/wayland-sessions/", mode = "644" },
+    { source = "resources/ciri-portals.conf", dest = "/usr/share/xdg-desktop-portal/", mode = "644" },
+    { source = "resources/ciri.service", dest = "/usr/lib/systemd/user/", mode = "644" },
+    { source = "resources/ciri-shutdown.target", dest = "/usr/lib/systemd/user/", mode = "644" },
 ]
 [package.metadata.generate-rpm.requires]
 alacritty = "*"
@@ -179,10 +191,10 @@ fuzzel = "*"
 [package.metadata.deb]
 depends = "alacritty, fuzzel"
 assets = [
-    ["target/release/niri", "usr/bin/", "755"],
-    ["resources/niri-session", "usr/bin/", "755"],
-    ["resources/niri.desktop", "/usr/share/wayland-sessions/", "644"],
-    ["resources/niri-portals.conf", "/usr/share/xdg-desktop-portal/", "644"],
-    ["resources/niri.service", "/usr/lib/systemd/user/", "644"],
-    ["resources/niri-shutdown.target", "/usr/lib/systemd/user/", "644"],
+    ["target/release/ciri", "usr/bin/", "755"],
+    ["resources/ciri-session", "usr/bin/", "755"],
+    ["resources/ciri.desktop", "/usr/share/wayland-sessions/", "644"],
+    ["resources/ciri-portals.conf", "/usr/share/xdg-desktop-portal/", "644"],
+    ["resources/ciri.service", "/usr/lib/systemd/user/", "644"],
+    ["resources/ciri-shutdown.target", "/usr/lib/systemd/user/", "644"],
 ]

@@ -2117,7 +2117,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "niri"
+name = "ciri"
 version = "26.4.0"
 dependencies = [
  "accesskit",
@@ -2212,7 +2212,7 @@ dependencies = [
  "anyhow",
  "gtk4",
  "libadwaita",
- "niri",
+ "ciri",
  "niri-config",
  "smithay",
  "tracing",

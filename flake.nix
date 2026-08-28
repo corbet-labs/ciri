@@ -1,6 +1,6 @@
-# This flake file is community maintained
+# This flake remains close to Niri's community-maintained package expression.
 {
-  description = "Niri: A scrollable-tiling Wayland compositor.";
+  description = "Ciri: a close-to-upstream Niri fork with software EGL support.";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
@@ -11,7 +11,7 @@
     }:
     let
       revision = self.shortRev or self.dirtyShortRev or "unknown";
-      niri-package =
+      ciri-package =
         {
           lib,
           cairo,
@@ -36,7 +36,7 @@
         }:
 
         rustPlatform.buildRustPackage {
-          pname = "niri";
+          pname = "ciri";
           version = revision;
 
           src = lib.fileset.toSource {
@@ -53,9 +53,9 @@
           };
 
           postPatch = ''
-            patchShebangs resources/niri-session
-            substituteInPlace resources/niri.service \
-              --replace-fail 'ExecStart=niri' "ExecStart=$out/bin/niri"
+            patchShebangs resources/ciri-session
+            substituteInPlace resources/ciri.service \
+              --replace-fail 'ExecStart=ciri' "ExecStart=$out/bin/ciri"
           '';
 
           cargoLock = {
@@ -99,7 +99,7 @@
 
           # ever since this commit:
           # https://github.com/niri-wm/niri/commit/771ea1e81557ffe7af9cbdbec161601575b64d81
-          # niri now runs an actual instance of the real compositor (with a mock backend) during tests
+          # The compositor runs a real instance with a mock backend during tests
           # and thus creates a real socket file in the runtime dir.
           # this is fine for our build, we just need to make sure it has a directory to write to.
           preCheck = ''
@@ -114,18 +114,18 @@
 
           postInstall =
             ''
-              installShellCompletion --cmd niri \
-                --bash <($out/bin/niri completions bash) \
-                --fish <($out/bin/niri completions fish) \
-                --nushell <($out/bin/niri completions nushell) \
-                --zsh <($out/bin/niri completions zsh)
+              installShellCompletion --cmd ciri \
+                --bash <($out/bin/ciri completions bash) \
+                --fish <($out/bin/ciri completions fish) \
+                --nushell <($out/bin/ciri completions nushell) \
+                --zsh <($out/bin/ciri completions zsh)
 
-              install -Dm644 resources/niri.desktop -t $out/share/wayland-sessions
-              install -Dm644 resources/niri-portals.conf -t $out/share/xdg-desktop-portal
+              install -Dm644 resources/ciri.desktop -t $out/share/wayland-sessions
+              install -Dm644 resources/ciri-portals.conf -t $out/share/xdg-desktop-portal
             ''
             + lib.optionalString withSystemd ''
-              install -Dm755 resources/niri-session $out/bin/niri-session
-              install -Dm644 resources/niri{.service,-shutdown.target} -t $out/lib/systemd/user
+              install -Dm755 resources/ciri-session $out/bin/ciri-session
+              install -Dm644 resources/ciri{.service,-shutdown.target} -t $out/lib/systemd/user
             '';
 
           env = {
@@ -139,18 +139,18 @@
                 "-Wl,--pop-state"
               ]
             );
-            NIRI_BUILD_COMMIT = revision;
+            CIRI_BUILD_COMMIT = revision;
           };
 
           passthru = {
-            providedSessions = [ "niri" ];
+            providedSessions = [ "ciri" ];
           };
 
           meta = {
             description = "Scrollable-tiling Wayland compositor";
-            homepage = "https://github.com/niri-wm/niri";
-            license = lib.licenses.gpl3Only;
-            mainProgram = "niri";
+            homepage = "https://github.com/corbet-labs/ciri";
+            license = lib.licenses.gpl3Plus;
+            mainProgram = "ciri";
             platforms = lib.platforms.linux;
           };
         };
@@ -165,7 +165,7 @@
     {
       checks = forAllSystems (system: {
         # We use the debug build here to save a bit of time
-        inherit (self.packages.${system}) niri-debug;
+        inherit (self.packages.${system}) ciri-debug;
       });
 
       devShells = forAllSystems (
@@ -173,7 +173,7 @@
         let
           pkgs = nixpkgsFor.${system};
           rustfmt' = pkgs.rustfmt.override { asNightly = true; };
-          inherit (self.packages.${system}) niri;
+          inherit (self.packages.${system}) ciri;
         in
         {
           default = pkgs.mkShell {
@@ -193,7 +193,7 @@
               pkgs.wrapGAppsHook4 # For `niri-visual-tests`
             ];
 
-            buildInputs = niri.buildInputs ++ [
+            buildInputs = ciri.buildInputs ++ [
               pkgs.libadwaita # For `niri-visual-tests`
             ];
 
@@ -203,7 +203,7 @@
               # in the package expression
               #
               # This should only be set with `RUSTFLAGS="$RUSTFLAGS -C your-flags"`
-              RUSTFLAGS = niri.RUSTFLAGS;
+              RUSTFLAGS = ciri.RUSTFLAGS;
             };
           };
         }
@@ -214,17 +214,17 @@
       packages = forAllSystems (
         system:
         let
-          niri = nixpkgsFor.${system}.callPackage niri-package { };
+          ciri = nixpkgsFor.${system}.callPackage ciri-package { };
         in
         {
-          inherit niri;
+          inherit ciri;
 
           # NOTE: This is for development purposes only
           #
           # It is primarily to help with quickly iterating on
           # changes made to the above expression - though it is
-          # also not stripped in order to better debug niri itself
-          niri-debug = niri.overrideAttrs (
+          # also not stripped in order to better debug Ciri itself
+          ciri-debug = ciri.overrideAttrs (
             newAttrs: oldAttrs: {
               pname = oldAttrs.pname + "-debug";
 
@@ -235,12 +235,12 @@
             }
           );
 
-          default = niri;
+          default = ciri;
         }
       );
 
       overlays.default = final: _: {
-        niri = final.callPackage niri-package { };
+        ciri = final.callPackage ciri-package { };
       };
     };
 }

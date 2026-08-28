@@ -91,7 +91,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
 
         // Set the current desktop for xdg-desktop-portal.
-        env::set_var("XDG_CURRENT_DESKTOP", "niri");
+        env::set_var("XDG_CURRENT_DESKTOP", "ciri");
         // Ensure the session type is set to Wayland for xdg-autostart and Qt apps.
         env::set_var("XDG_SESSION_TYPE", "wayland");
     }
@@ -117,7 +117,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         clap_complete::generate(
                             Nushell,
                             &mut Cli::command(),
-                            "niri",
+                            "ciri",
                             &mut io::stdout(),
                         );
                     }
@@ -126,7 +126,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         clap_complete::generate(
                             generator,
                             &mut Cli::command(),
-                            "niri",
+                            "ciri",
                             &mut io::stdout(),
                         );
                     }
@@ -139,7 +139,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Needs to be done before starting Tracy, so that it applies to Tracy's threads.
     niri::utils::signals::block_early().unwrap();
 
-    // Avoid starting Tracy for the `niri msg` code path since starting/stopping Tracy is a bit
+    // Avoid starting Tracy for the `ciri msg` code path since starting/stopping Tracy is a bit
     // slow.
     tracy_client::Client::start();
 
@@ -148,11 +148,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // below, because some of those Drop impls themselves create Tracy spans.
     let _shutdown_tracy = ShutdownTracy;
 
-    info!("starting version {}", &version());
+    info!("starting Ciri version {}", &version());
 
     // Load the config.
     let config_path = config_path(cli.config);
-    env::remove_var("NIRI_CONFIG");
+    env::remove_var("CIRI_CONFIG");
     let (config_created_at, config_load_result) = config_path.load_or_create();
     let config_errored = config_load_result.config.is_err();
     let mut config = config_load_result.config.unwrap_or_else(|err| {
@@ -198,7 +198,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         socket_name.to_string_lossy()
     );
 
-    // Set NIRI_SOCKET for children.
+    // Set CIRI_SOCKET for children.
     if let Some(ipc) = &state.niri.ipc_server {
         let socket_path = ipc.socket_path.as_deref().unwrap();
         env::set_var(SOCKET_PATH_ENV, socket_path);
@@ -238,7 +238,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         state.niri.a11y.start();
     }
 
-    if env::var_os("NIRI_DISABLE_SYSTEM_MANAGER_NOTIFY").is_none_or(|x| x != "1") {
+    if env::var_os("CIRI_DISABLE_SYSTEM_MANAGER_NOTIFY").is_none_or(|x| x != "1") {
         // Notify systemd we're ready.
         if let Err(err) = sd_notify::notify(&[NotifyState::Ready]) {
             warn!("error notifying systemd: {err:?}");
@@ -330,13 +330,13 @@ fn import_environment() {
 }
 
 fn env_config_path() -> Option<PathBuf> {
-    env::var_os("NIRI_CONFIG")
+    env::var_os("CIRI_CONFIG")
         .filter(|x| !x.is_empty())
         .map(PathBuf::from)
 }
 
 fn default_config_path() -> Option<PathBuf> {
-    let Some(dirs) = ProjectDirs::from("", "", "niri") else {
+    let Some(dirs) = ProjectDirs::from("", "", "ciri") else {
         warn!("error retrieving home directory");
         return None;
     };
@@ -347,7 +347,7 @@ fn default_config_path() -> Option<PathBuf> {
 }
 
 fn system_config_path() -> PathBuf {
-    PathBuf::from("/etc/niri/config.kdl")
+    PathBuf::from("/etc/ciri/config.kdl")
 }
 
 fn config_path(cli_path: Option<PathBuf>) -> ConfigPath {

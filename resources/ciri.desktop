@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Ciri
+Comment=A close-to-upstream scrollable-tiling Wayland compositor
+Exec=ciri-session
+Type=Application
+DesktopNames=ciri

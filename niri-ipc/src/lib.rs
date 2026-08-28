@@ -1,6 +1,6 @@
-//! Types for communicating with niri via IPC.
+//! Types for communicating with Ciri via its Niri-compatible IPC protocol.
 //!
-//! After connecting to the niri socket, you can send [`Request`]s. Niri will process them one by
+//! After connecting to the Ciri socket, you can send [`Request`]s. Ciri will process them one by
 //! one, in order, and to each request it will respond with a single [`Reply`], which is a `Result`
 //! wrapping a [`Response`].
 //!
@@ -23,10 +23,10 @@
 //! it is a fairly simple helper, so if you need async, or if you're using a different language,
 //! you are encouraged to communicate with the socket manually.
 //!
-//! 1. Read the socket filesystem path from [`socket::SOCKET_PATH_ENV`] (`$NIRI_SOCKET`).
+//! 1. Read the socket filesystem path from [`socket::SOCKET_PATH_ENV`] (`$CIRI_SOCKET`).
 //! 2. Connect to the socket and write a JSON-formatted [`Request`] on a single line. You can follow
 //!    up with a line break and a flush, or just flush and shutdown the write end of the socket.
-//! 3. Niri will respond with a single line JSON-formatted [`Reply`].
+//! 3. Ciri will respond with a single line JSON-formatted [`Reply`].
 //! 4. You can keep writing [`Request`]s, each on a single line, and read [`Reply`]s, also each on a
 //!    separate line.
 //! 5. After you request an event stream, niri will keep responding with JSON-formatted [`Event`]s,
@@ -61,11 +61,11 @@ use serde::{Deserialize, Serialize};
 pub mod socket;
 pub mod state;
 
-/// Request from client to niri.
+/// Request from a client to Ciri.
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[cfg_attr(feature = "json-schema", derive(schemars::JsonSchema))]
 pub enum Request {
-    /// Request the version string for the running niri instance.
+    /// Request the version string for the running Ciri instance.
     Version,
     /// Request information about connected outputs.
     Outputs,
@@ -121,7 +121,7 @@ pub enum Request {
     Casts,
 }
 
-/// Reply from niri to client.
+/// Reply from Ciri to a client.
 ///
 /// Every request gets one reply.
 ///
@@ -131,13 +131,13 @@ pub enum Request {
 /// * Otherwise, it will be `Reply::Ok(response)` with one of the other [`Response`] variants.
 pub type Reply = Result<Response, String>;
 
-/// Successful response from niri to client.
+/// Successful response from Ciri to a client.
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[cfg_attr(feature = "json-schema", derive(schemars::JsonSchema))]
 pub enum Response {
     /// A request that does not need a response was handled successfully.
     Handled,
-    /// The version string for the running niri instance.
+    /// The version string for the running Ciri instance.
     Version(String),
     /// Information about connected outputs.
     ///
@@ -1024,7 +1024,7 @@ pub enum OutputAction {
     Mode {
         /// Mode to set, or "auto" for automatic selection.
         ///
-        /// Run `niri msg outputs` to see the available modes.
+        /// Run `ciri msg outputs` to see the available modes.
         #[cfg_attr(feature = "clap", arg())]
         mode: ModeToSet,
     },
@@ -1450,7 +1450,7 @@ pub struct Workspace {
     pub id: u64,
     /// Index of the workspace on its monitor.
     ///
-    /// This is the same index you can use for requests like `niri msg action focus-workspace`.
+    /// This is the same index you can use for requests like `ciri msg action focus-workspace`.
     ///
     /// This index *will change* as you move and re-order workspace. It is merely the workspace's
     /// current position on its monitor. Workspaces on different monitors can have the same index.
