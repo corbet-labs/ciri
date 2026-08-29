@@ -31,7 +31,9 @@ jobs:
           test -f resources/ciri.service
           test -f resources/ciri-portals.conf
           ! git ls-files | grep -E '(^|/)(nixciri|home/richc)(/|$)'
-          ! grep -R -n -E +            'NIRI_SOCKET|[.]config/niri|/etc/niri|ExecStart=niri|niri[.]desktop|niri[.]service' +            Cargo.toml src resources README.md UPSTREAM.md
+          ! grep -R -n -E \
+            'NIRI_SOCKET|[.]config/niri|/etc/niri|ExecStart=niri|niri[.]desktop|niri[.]service' \
+            Cargo.toml src resources README.md UPSTREAM.md
           grep -q 'name = "ciri"' Cargo.toml
           grep -R -q 'CIRI_SOCKET' src
           grep -q 'XDG_CURRENT_DESKTOP", "ciri"' src/main.rs

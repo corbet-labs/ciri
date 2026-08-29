@@ -37,7 +37,9 @@
 
         rustPlatform.buildRustPackage {
           pname = "ciri";
-          version = revision;
+          # Keep the upstream-compatible version available to integration modules while
+          # retaining the exact fork revision in the package identity.
+          version = "26.4.0-${revision}";
 
           src = lib.fileset.toSource {
             root = ./.;
