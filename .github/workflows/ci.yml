@@ -14,6 +14,34 @@ env:
   DEPS_PKG: git curl rust llvm pkgconf pixman libudev-devd libdisplay-info seatd libinput libxkbcommon pipewire mesa-libs cairo devel/glib20 gettext-runtime harfbuzz pango
 
 jobs:
+  downstream-contract:
+    name: downstream product contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          show-progress: false
+
+      - name: Validate public runtime identity
+        run: |
+          test -x resources/ciri-session
+          test -f resources/ciri.desktop
+          test -f resources/ciri.service
+          test -f resources/ciri-portals.conf
+          ! git ls-files | grep -E '(^|/)(nixciri|home/richc)(/|$)'
+          ! grep -R -n -E +            'NIRI_SOCKET|[.]config/niri|/etc/niri|ExecStart=niri|niri[.]desktop|niri[.]service' +            Cargo.toml src resources README.md UPSTREAM.md
+          grep -q 'name = "ciri"' Cargo.toml
+          grep -R -q 'CIRI_SOCKET' src
+          grep -q 'XDG_CURRENT_DESKTOP", "ciri"' src/main.rs
+
+      - name: Keep the software-EGL patch isolated and removable
+        run: |
+          test "$(git show --format= --name-only e395a274 | sort -u)" = "src/backend/tty.rs"
+          git show --format= e395a274 | git patch-id --stable > /tmp/software-egl.patch-id
+          test -s /tmp/software-egl.patch-id
+
   test:
     strategy:
       fail-fast: false
@@ -284,6 +312,7 @@ jobs:
 
   nix:
     runs-on: ubuntu-24.04
+    timeout-minutes: 90
     steps:
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@v1.3.1
@@ -297,7 +326,13 @@ jobs:
 
       - name: Install Nix
         uses: cachix/install-nix-action@v31
-        continue-on-error: true
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            sandbox = true
 
-      - run: nix flake check
-        continue-on-error: true
+      - name: Check the Nix package
+        run: nix flake check --print-build-logs
+
+      - name: Build the release package
+        run: nix build .#packages.x86_64-linux.ciri --print-build-logs
