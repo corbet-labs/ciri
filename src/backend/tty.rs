@@ -796,11 +796,21 @@ impl Tty {
                 "software EGL renderers are only allowed on the primary node"
             );
 
-            let render_node = egl_device
-                .try_get_render_node()
-                .ok()
-                .flatten()
-                .unwrap_or(node);
+            // A software EGL device can report no render node even when the
+            // primary DRM device has one. Keep the GPU-manager key aligned
+            // with the primary render node chosen during backend setup;
+            // otherwise initialization succeeds under the card node, but
+            // every output render later asks for the absent render-node key
+            // and fails with Error::NoDevice.
+            let render_node = if is_software {
+                self.primary_render_node
+            } else {
+                egl_device
+                    .try_get_render_node()
+                    .ok()
+                    .flatten()
+                    .unwrap_or(node)
+            };
             self.gpu_manager
                 .as_mut()
                 .add_node(render_node, gbm.clone())
