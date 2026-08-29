@@ -1,5 +1,14 @@
 # Contributing to niri
 
+## ciri licensing
+
+Before submitting changes to this downstream, read [LICENSING.md](LICENSING.md).
+New standalone files default to Apache-2.0. A contribution to an inherited or
+otherwise pre-existing GPL file is dual-licensed as
+`Apache-2.0 OR GPL-3.0-or-later`, so the combined compositor remains
+distributable under its required license. This is an inbound license grant,
+not a copyright assignment.
+
 Thanks for your interest in niri!
 The project has grown quite a bit, and we could use all help that we can.
 

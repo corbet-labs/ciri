@@ -45,5 +45,9 @@ and personal workspace policy do not belong here.
 
 ## License
 
-ciri preserves Niri's GNU General Public License, version 3 or later, and its
-upstream history and authorship. See [LICENSE](LICENSE).
+ciri is not relicensed wholesale. The niri-derived compositor remains GNU GPL,
+version 3 or later, with its upstream history, notices, and authorship intact.
+New independently authored downstream files use Apache-2.0; when combined into
+the compositor, the distributed work remains GPL-3.0-or-later. See
+[LICENSING.md](LICENSING.md), [LICENSE](LICENSE), and
+[LICENSE-APACHE](LICENSE-APACHE).
