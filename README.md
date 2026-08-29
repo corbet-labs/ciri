@@ -12,8 +12,9 @@ consumed from upstream.
 - User configuration lives at `$XDG_CONFIG_HOME/ciri/config.kdl`, with
   `/etc/ciri/config.kdl` as the system fallback and `CIRI_CONFIG` as the
   explicit override.
-- IPC uses `CIRI_SOCKET` and `ciri.*.sock`; session, service, desktop, portal,
-  Dinit, completion, and package names use `ciri` consistently.
+- IPC discovery remains compatible with the Niri ecosystem through
+  `NIRI_SOCKET` and `niri.*.sock`; session, service, desktop, portal, Dinit,
+  completion, and package names use `ciri`.
 - Niri's proposed software-rendering change from
   [PR #3959](https://github.com/niri-wm/niri/pull/3959) is carried as an
   isolated commit. It permits a software EGL renderer as a fallback and
@@ -27,10 +28,10 @@ upstream.
 
 ## Upstream compatibility
 
-The configuration grammar, IPC data model, and most implementation names remain
-aligned with Niri. Internal crates such as `niri-config` and `niri-ipc` retain
-their upstream names to keep rebases small; this does not expose the retired
-Niri runtime paths, service names, or environment variables.
+The configuration grammar, IPC data model, socket discovery, and most
+implementation names remain aligned with Niri. Internal crates such as
+`niri-config` and `niri-ipc` retain their upstream names to keep rebases small.
+Niri-compatible tools can connect to ciri without a ciri-specific adapter.
 
 Niri's [documentation](https://niri-wm.github.io/niri/) remains the reference
 for compositor behavior and configuration syntax. In command and installation

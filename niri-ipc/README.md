@@ -1,13 +1,10 @@
 # niri-ipc
 
-Upstream-named types and helpers for ciri's
-[Niri](https://github.com/niri-wm/niri)-compatible IPC data model. ciri exposes
-the socket through `CIRI_SOCKET`; the crate name remains unchanged to minimize
-the downstream source delta.
+Types and helpers for interfacing with the [niri](https://github.com/niri-wm/niri) Wayland compositor.
 
 ## Backwards compatibility
 
-This crate follows the Niri version used by ciri.
+This crate follows the niri version.
 It is **not** API-stable in terms of the Rust semver.
 In particular, expect new struct fields and enum variants to be added in patch version bumps.
 
