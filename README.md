@@ -17,7 +17,9 @@ consumed from upstream.
 - Niri's proposed software-rendering change from
   [PR #3959](https://github.com/niri-wm/niri/pull/3959) is carried as an
   isolated commit. It permits a software EGL renderer as a fallback and
-  disables DMA-BUF and DRM leasing while that renderer is active.
+  disables DMA-BUF and DRM leasing while that renderer is active. A separate
+  follow-up keeps Smithay's GPU-manager key on the selected primary render
+  node when Mesa's software EGL device reports no render node of its own.
 
 The software-rendering patch is not a Cairo or Pixman renderer, and it does not
 add a ciri-specific layout engine. ciri follows Niri's scrolling and layout work

@@ -16,7 +16,7 @@ the eventual ciri repository is the only valid publication target.
 
 | Change | Source | Removal rule |
 |---|---|---|
-| Allow software EGL as a last-resort renderer and disable incompatible DMA-BUF and DRM-leasing paths | [Niri PR #3959](https://github.com/niri-wm/niri/pull/3959), commit `5aa78c08bc866af772451d276f2317ffb3ce078c` | Drop when upstream contains an equivalent accepted implementation |
+| Allow software EGL as a last-resort renderer, disable incompatible DMA-BUF and DRM-leasing paths, and keep its GPU-manager identity on the primary render node | [Niri PR #3959](https://github.com/niri-wm/niri/pull/3959), cherry-pick `e395a274`; VM-discovered node correction `3a27dceb` | Drop both commits when upstream contains an equivalent accepted implementation |
 | Expose the ciri command, configuration, socket, service, session, package, and documentation identity | ciri-owned product boundary | Permanent; keep limited to public and runtime-facing surfaces |
 
 Internal `niri_*` Rust crates, types, modules, shader identifiers, and tracing
