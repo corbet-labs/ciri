@@ -1,7 +1,7 @@
 > [!NOTE]
 > This directory is an unmodified upstream Niri documentation snapshot kept
-> for source synchronization. Ciri does not publish it as Ciri documentation.
-> See the repository root `README.md` for Ciri's command, paths, and runtime
+> for source synchronization. ciri does not publish it as ciri documentation.
+> See the repository root `README.md` for ciri's command, paths, and runtime
 > identity, then use the current upstream Niri documentation for shared
 > compositor behavior and configuration grammar.
 

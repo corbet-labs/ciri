@@ -1,5 +1,5 @@
 [Unit]
-Description=Ciri scrollable-tiling Wayland compositor
+Description=ciri scrollable-tiling Wayland compositor
 BindsTo=graphical-session.target
 Before=graphical-session.target
 Wants=graphical-session-pre.target

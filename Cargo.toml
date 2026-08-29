@@ -7,7 +7,7 @@ members = [
 
 [workspace.package]
 version = "26.4.0"
-description = "A close-to-upstream Niri fork with Ciri runtime identity and software EGL support"
+description = "A close-to-upstream Niri fork with ciri runtime identity and software EGL support"
 authors = ["Ivan Molodetskikh <yalterz@gmail.com>"]
 license = "GPL-3.0-or-later"
 edition = "2021"
@@ -53,7 +53,7 @@ keywords = ["wayland", "compositor", "tiling", "smithay", "wm"]
 
 [lib]
 # Keep the internal library name aligned with upstream. Renaming implementation
-# crates would create a large permanent rebase delta without changing Ciri's
+# crates would create a large permanent rebase delta without changing ciri's
 # public runtime interface.
 name = "niri"
 path = "src/lib.rs"

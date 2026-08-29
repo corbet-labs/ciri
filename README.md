@@ -1,6 +1,6 @@
-# Ciri
+# ciri
 
-Ciri is a deliberately close fork of
+ciri is a deliberately close fork of
 [Niri](https://github.com/niri-wm/niri), the scrollable-tiling Wayland
 compositor built on Smithay. It gives the downstream product its own runtime
 identity and carries only the small compositor patch set that cannot yet be
@@ -20,7 +20,7 @@ consumed from upstream.
   disables DMA-BUF and DRM leasing while that renderer is active.
 
 The software-rendering patch is not a Cairo or Pixman renderer, and it does not
-add a Ciri-specific layout engine. Ciri follows Niri's scrolling and layout work
+add a ciri-specific layout engine. ciri follows Niri's scrolling and layout work
 upstream.
 
 ## Upstream compatibility
@@ -32,7 +32,7 @@ Niri runtime paths, service names, or environment variables.
 
 Niri's [documentation](https://niri-wm.github.io/niri/) remains the reference
 for compositor behavior and configuration syntax. In command and installation
-examples, substitute Ciri's public command and paths listed above.
+examples, substitute ciri's public command and paths listed above.
 
 See [UPSTREAM.md](UPSTREAM.md) for the exact base, downstream patch ledger, and
 sync procedure.
@@ -45,5 +45,5 @@ and personal workspace policy do not belong here.
 
 ## License
 
-Ciri preserves Niri's GNU General Public License, version 3 or later, and its
+ciri preserves Niri's GNU General Public License, version 3 or later, and its
 upstream history and authorship. See [LICENSE](LICENSE).

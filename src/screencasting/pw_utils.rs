@@ -244,7 +244,7 @@ impl PipeWire {
                 // Reset PipeWire on connection errors.
                 if id == PW_ID_CORE && res == -32 {
                     if let Err(err) = to_niri_.send(PwToNiri::FatalError) {
-                        warn!("error sending FatalError to Ciri: {err:?}");
+                        warn!("error sending FatalError to ciri: {err:?}");
                     }
                 }
             })
@@ -294,13 +294,13 @@ impl PipeWire {
         let to_niri_ = self.to_niri.clone();
         let stop_cast = move || {
             if let Err(err) = to_niri_.send(PwToNiri::StopCast { session_id }) {
-                warn!(%session_id, "error sending StopCast to Ciri: {err:?}");
+                warn!(%session_id, "error sending StopCast to ciri: {err:?}");
             }
         };
         let to_niri_ = self.to_niri.clone();
         let redraw = move || {
             if let Err(err) = to_niri_.send(PwToNiri::Redraw { stream_id }) {
-                warn!(%stream_id, "error sending Redraw to Ciri: {err:?}");
+                warn!(%stream_id, "error sending Redraw to ciri: {err:?}");
             }
         };
         let redraw_ = redraw.clone();

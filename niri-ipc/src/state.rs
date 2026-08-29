@@ -2,7 +2,7 @@
 //!
 //! 1. Create an [`EventStreamState`] using `Default::default()`, or any individual state part if
 //!    you only care about part of the state.
-//! 2. Connect to the Ciri socket and request an event stream.
+//! 2. Connect to the ciri socket and request an event stream.
 //! 3. Pass every [`Event`] to [`EventStreamStatePart::apply`] on your state.
 //! 4. Read the fields of the state as needed.
 

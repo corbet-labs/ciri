@@ -443,7 +443,7 @@ impl PointerLocator {
         let sender = OwnedUniqueName::from(sender.to_owned());
 
         if let Err(err) = self.to_niri.send(A11yManagerToNiri::QueryPointer) {
-            warn!("error sending message to Ciri: {err:?}");
+            warn!("error sending message to ciri: {err:?}");
             return Err(A11yError::Failed("internal error".to_owned()));
         }
 
@@ -451,7 +451,7 @@ impl PointerLocator {
             Ok(NiriToA11yManager::PointerContents(Some((data, x, y)))) => Ok((data, x, y)),
             Ok(NiriToA11yManager::PointerContents(None)) => Err(A11yError::UnknownToplevel),
             Err(err) => {
-                warn!("error receiving message from Ciri: {err:?}");
+                warn!("error receiving message from ciri: {err:?}");
                 Err(A11yError::Failed("internal error".to_owned()))
             }
         };

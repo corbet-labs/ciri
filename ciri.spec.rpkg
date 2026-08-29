@@ -91,7 +91,7 @@ Requires:       libwayland-server
 Requires:       xwayland-satellite >= 0.7
 %endif
 
-# Portal implementations used by Ciri
+# Portal implementations used by ciri
 Recommends:     xdg-desktop-portal-gtk
 Recommends:     xdg-desktop-portal-gnome
 Recommends:     gnome-keyring

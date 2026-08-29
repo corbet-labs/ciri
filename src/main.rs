@@ -148,7 +148,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // below, because some of those Drop impls themselves create Tracy spans.
     let _shutdown_tracy = ShutdownTracy;
 
-    info!("starting Ciri version {}", &version());
+    info!("starting ciri version {}", &version());
 
     // Load the config.
     let config_path = config_path(cli.config);

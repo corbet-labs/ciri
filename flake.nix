@@ -1,6 +1,6 @@
 # This flake remains close to Niri's community-maintained package expression.
 {
-  description = "Ciri: a close-to-upstream Niri fork with software EGL support.";
+  description = "ciri: a close-to-upstream Niri fork with software EGL support.";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
@@ -223,7 +223,7 @@
           #
           # It is primarily to help with quickly iterating on
           # changes made to the above expression - though it is
-          # also not stripped in order to better debug Ciri itself
+          # also not stripped in order to better debug ciri itself
           ciri-debug = ciri.overrideAttrs (
             newAttrs: oldAttrs: {
               pname = oldAttrs.pname + "-debug";

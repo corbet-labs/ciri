@@ -16,7 +16,7 @@ use crate::cli::Msg;
 use crate::utils::version;
 
 pub fn handle_msg(mut msg: Msg, json: bool) -> anyhow::Result<()> {
-    // For actions taking paths, prepend the Ciri CLI's working directory.
+    // For actions taking paths, prepend the ciri CLI's working directory.
     if let Msg::Action {
         action:
             Action::Screenshot { path, .. }
@@ -51,12 +51,12 @@ pub fn handle_msg(mut msg: Msg, json: bool) -> anyhow::Result<()> {
         Msg::Casts => Request::Casts,
     };
 
-    let mut socket = Socket::connect().context("error connecting to the Ciri socket")?;
+    let mut socket = Socket::connect().context("error connecting to the ciri socket")?;
 
     let result = socket.send(request);
 
-    // For errors that can be caused by a version mismatch between the running Ciri instance and
-    // the Ciri msg CLI, we will try to fetch and compare the versions.
+    // For errors that can be caused by a version mismatch between the running ciri instance and
+    // the ciri msg CLI, we will try to fetch and compare the versions.
     let check_compositor_version = match &result {
         Err(err) => {
             // Response JSON parsing errors.
@@ -65,7 +65,7 @@ pub fn handle_msg(mut msg: Msg, json: bool) -> anyhow::Result<()> {
                 ErrorKind::InvalidData | ErrorKind::UnexpectedEof
             )
         }
-        // Error returned from Ciri.
+        // Error returned from ciri.
         Ok(Err(_)) => true,
         _ => false,
     };
@@ -89,16 +89,16 @@ pub fn handle_msg(mut msg: Msg, json: bool) -> anyhow::Result<()> {
         Some(Ok(Response::Version(compositor_version))) => {
             let cli_version = version();
             if cli_version != compositor_version {
-                eprintln!("Running Ciri compositor has a different version from the Ciri CLI:");
+                eprintln!("Running ciri compositor has a different version from the ciri CLI:");
                 eprintln!("Compositor version: {compositor_version}");
                 eprintln!("CLI version:        {cli_version}");
-                eprintln!("Did you forget to restart Ciri after an update?");
+                eprintln!("Did you forget to restart ciri after an update?");
                 eprintln!();
             }
         }
         Some(_) => {
-            eprintln!("Unable to get the running Ciri compositor version.");
-            eprintln!("Did you forget to restart Ciri after an update?");
+            eprintln!("Unable to get the running ciri compositor version.");
+            eprintln!("Did you forget to restart ciri after an update?");
             eprintln!();
         }
         None => {
@@ -107,8 +107,8 @@ pub fn handle_msg(mut msg: Msg, json: bool) -> anyhow::Result<()> {
         }
     }
 
-    let reply = result.context("error communicating with Ciri")?;
-    let response = reply.map_err(|err_msg| anyhow!(err_msg).context("Ciri returned an error"))?;
+    let reply = result.context("error communicating with ciri")?;
+    let response = reply.map_err(|err_msg| anyhow!(err_msg).context("ciri returned an error"))?;
 
     match msg {
         Msg::RequestError => {
@@ -133,8 +133,8 @@ pub fn handle_msg(mut msg: Msg, json: bool) -> anyhow::Result<()> {
             }
 
             if cli_version != compositor_version {
-                eprintln!("Running Ciri compositor has a different version from the Ciri CLI.");
-                eprintln!("Did you forget to restart Ciri after an update?");
+                eprintln!("Running ciri compositor has a different version from the ciri CLI.");
+                eprintln!("Did you forget to restart ciri after an update?");
                 eprintln!();
             }
 
@@ -419,7 +419,7 @@ pub fn handle_msg(mut msg: Msg, json: bool) -> anyhow::Result<()> {
 
             let mut read_event = socket.read_events();
             loop {
-                let event = read_event().context("error reading event from Ciri")?;
+                let event = read_event().context("error reading event from ciri")?;
 
                 if json {
                     let event = serde_json::to_string(&event).context("error formatting event")?;

@@ -36,7 +36,7 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Sub {
-    /// Communicate with the running Ciri instance.
+    /// Communicate with the running ciri instance.
     Msg {
         #[command(subcommand)]
         msg: Msg,
@@ -101,9 +101,9 @@ pub enum Msg {
     },
     /// Start continuously receiving events from the compositor.
     EventStream,
-    /// Print the version of the running Ciri instance.
+    /// Print the version of the running ciri instance.
     Version,
-    /// Request an error from the running Ciri instance.
+    /// Request an error from the running ciri instance.
     RequestError,
     /// Print the overview state.
     OverviewState,

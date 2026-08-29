@@ -2194,7 +2194,7 @@ impl State {
         windows.insert(
             self.niri.casting.dynamic_cast_id_for_portal.get(),
             gnome_shell_introspect::WindowProperties {
-                title: String::from("Ciri Dynamic Cast Target"),
+                title: String::from("ciri Dynamic Cast Target"),
                 app_id: String::from("ch.corbet.ciri.desktop"),
             },
         );
@@ -2242,7 +2242,7 @@ impl State {
         {
             let config = self.niri.config.borrow();
             if config.input.keyboard.xkb != Xkb::default() {
-                trace!("ignoring locale1 xkb change because Ciri config has xkb settings");
+                trace!("ignoring locale1 xkb change because ciri config has xkb settings");
                 return;
             }
         }

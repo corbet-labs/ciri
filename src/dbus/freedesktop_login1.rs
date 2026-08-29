@@ -54,7 +54,7 @@ pub fn start(
             .unwrap_or_default();
 
         if let Err(err) = to_niri.send(Login1ToNiri::LidClosedChanged(lid_closed)) {
-            warn!("error sending initial lid state to Ciri: {err:?}");
+            warn!("error sending initial lid state to ciri: {err:?}");
             return;
         };
 
@@ -89,7 +89,7 @@ pub fn start(
 
             lid_closed = new_lid_closed;
             if let Err(err) = to_niri.send(Login1ToNiri::LidClosedChanged(lid_closed)) {
-                warn!("error sending message to Ciri: {err:?}");
+                warn!("error sending message to ciri: {err:?}");
                 return;
             };
         }

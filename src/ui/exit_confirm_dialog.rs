@@ -290,7 +290,7 @@ fn text(markup: bool) -> String {
     };
 
     format!(
-        "Are you sure you want to exit Ciri?\n\n\
+        "Are you sure you want to exit ciri?\n\n\
          Press {key} to confirm."
     )
 }
@@ -298,7 +298,7 @@ fn text(markup: bool) -> String {
 #[cfg(feature = "dbus")]
 pub fn a11y_node() -> accesskit::Node {
     let mut node = accesskit::Node::new(accesskit::Role::AlertDialog);
-    node.set_label("Exit Ciri");
+    node.set_label("Exit ciri");
     node.set_description(text(false));
     node.set_modal();
     node

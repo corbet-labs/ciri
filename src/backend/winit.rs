@@ -46,7 +46,7 @@ impl Winit {
         let builder = WindowAttributes::default()
             .with_surface_size(LogicalSize::new(1280.0, 800.0))
             // .with_resizable(false)
-            .with_title("Ciri")
+            .with_title("ciri")
             .with_platform_attributes(Box::new(
                 WindowAttributesWayland::default().with_name("ciri", ""),
             ));
